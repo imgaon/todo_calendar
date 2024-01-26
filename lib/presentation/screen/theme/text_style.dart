@@ -15,6 +15,13 @@ const TextStyle addAndEditTitle = TextStyle(
   letterSpacing: 0.3,
 );
 
+const TextStyle boldStyle = TextStyle(
+  fontWeight: FontWeight.w700,
+  color: primary,
+  fontSize: 20,
+  letterSpacing: -0.3,
+);
+
 const TextStyle mediumStyle = TextStyle(
   fontWeight: FontWeight.w500,
   color: primary,

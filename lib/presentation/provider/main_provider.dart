@@ -1,13 +1,20 @@
 import 'dart:collection';
 
+import 'package:table_calendar/table_calendar.dart';
 import 'package:todo_calendar/presentation/screen/theme/colors.dart';
 
 import '../../domain/model/event_model.dart';
 
-DateTime toDay = DateTime(
+DateTime toDay = DateTime.utc(
   DateTime.now().year,
   DateTime.now().month,
   DateTime.now().day,
+);
+
+DateTime testDay = DateTime.utc(
+  DateTime.now().year,
+  DateTime.now().month,
+  25,
 );
 
 DateTime firstDay = DateTime(
@@ -57,6 +64,26 @@ final eventSource = {
       subText: '서브 텍스트5',
     ),
   ],
+  testDay: [
+    Event(
+      title: 'T타이틀 1',
+      color: redColor,
+      priority: 1,
+      subText: 'T서브 텍스트1',
+    ),
+    Event(
+      title: 'T타이틀 2',
+      color: yellowColor,
+      priority: 2,
+      subText: 'T서브 텍스트2',
+    ),
+    Event(
+      title: 'T타이틀 3',
+      color: greenColor,
+      priority: 3,
+      subText: 'T서브 텍스트3',
+    ),
+  ],
 };
 
 class MainProvider {
@@ -98,7 +125,4 @@ class MainProvider {
 
     return weekAbbreviation;
   }
-
-
-
 }
