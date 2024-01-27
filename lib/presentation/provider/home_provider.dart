@@ -98,6 +98,7 @@ class HomeProvider extends ChangeNotifier {
       DateTime.now().month,
       DateTime.now().day,
     ),
+    selectedEvents: [],
   );
 
   HomeState get state => _state;
@@ -131,8 +132,23 @@ class HomeProvider extends ChangeNotifier {
     _state = state.copyWith(
       selectedDay: selectedDay,
       focusedDay: focusedDay,
+      selectedEvents: getEventsForDay(selectedDay),
     );
     notifyListeners();
+  }
+
+  void loadEvents(DateTime selectedDay) {
+    _state = state.copyWith(
+      selectedEvents: getEventsForDay(selectedDay),
+    );
+    notifyListeners();
+  }
+
+  List<Event> getEventsForDay(DateTime day) {
+    // print(day);
+    // print(events[day]);
+
+    return events[day] ?? [];
   }
 
   static const List<String> months = [

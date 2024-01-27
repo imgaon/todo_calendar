@@ -1,3 +1,5 @@
+import '../../domain/model/event_model.dart';
+
 class HomeState {
   final bool isSuccess1;
   final bool isSuccess2;
@@ -6,6 +8,7 @@ class HomeState {
   final bool isSuccess5;
   final DateTime focusedDay;
   final DateTime selectedDay;
+  final List<Event> selectedEvents;
 
 //<editor-fold desc="Data Methods">
   const HomeState({
@@ -16,6 +19,7 @@ class HomeState {
     this.isSuccess5 = false,
     required this.focusedDay,
     required this.selectedDay,
+    required this.selectedEvents,
   });
 
   @override
@@ -29,7 +33,8 @@ class HomeState {
           isSuccess4 == other.isSuccess4 &&
           isSuccess5 == other.isSuccess5 &&
           focusedDay == other.focusedDay &&
-          selectedDay == other.selectedDay);
+          selectedDay == other.selectedDay &&
+          selectedEvents == other.selectedEvents);
 
   @override
   int get hashCode =>
@@ -39,7 +44,8 @@ class HomeState {
       isSuccess4.hashCode ^
       isSuccess5.hashCode ^
       focusedDay.hashCode ^
-      selectedDay.hashCode;
+      selectedDay.hashCode ^
+      selectedEvents.hashCode;
 
   @override
   String toString() {
@@ -51,6 +57,7 @@ class HomeState {
         ' isSuccess5: $isSuccess5,' +
         ' focusedDay: $focusedDay,' +
         ' selectedDay: $selectedDay,' +
+        ' selectedEvents: $selectedEvents,' +
         '}';
   }
 
@@ -62,6 +69,7 @@ class HomeState {
     bool? isSuccess5,
     DateTime? focusedDay,
     DateTime? selectedDay,
+    List<Event>? selectedEvents,
   }) {
     return HomeState(
       isSuccess1: isSuccess1 ?? this.isSuccess1,
@@ -71,6 +79,7 @@ class HomeState {
       isSuccess5: isSuccess5 ?? this.isSuccess5,
       focusedDay: focusedDay ?? this.focusedDay,
       selectedDay: selectedDay ?? this.selectedDay,
+      selectedEvents: selectedEvents ?? this.selectedEvents,
     );
   }
 
@@ -83,6 +92,7 @@ class HomeState {
       'isSuccess5': this.isSuccess5,
       'focusedDay': this.focusedDay,
       'selectedDay': this.selectedDay,
+      'selectedEvents': this.selectedEvents,
     };
   }
 
@@ -95,6 +105,9 @@ class HomeState {
       isSuccess5: map['isSuccess5'] as bool,
       focusedDay: map['focusedDay'] as DateTime,
       selectedDay: map['selectedDay'] as DateTime,
+      selectedEvents: map['selectedEvents'] as List<Event>,
     );
   }
+
+//</editor-fold>
 }

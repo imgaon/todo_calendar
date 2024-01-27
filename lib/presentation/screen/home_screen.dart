@@ -28,7 +28,6 @@ class _HomeScreenState extends State<HomeScreen> {
   HomeState get state => widget.homeProvider.state;
   HomeProvider get viewModel => widget.homeProvider;
 
-  late final ValueNotifier<List<Event>> _selectedEvents;
   late final EventSuccessDialog eventSuccessDialog;
 
   @override
@@ -39,22 +38,16 @@ class _HomeScreenState extends State<HomeScreen> {
     });
 
     eventSuccessDialog = EventSuccessDialog();
-    _selectedEvents = ValueNotifier(getEventsForDay(state.selectedDay));
+    viewModel.loadEvents(state.selectedDay);
   }
 
   @override
   void dispose() {
     widget.homeProvider.removeListener(updateScreen);
-    _selectedEvents.dispose();
     super.dispose();
   }
 
-  List<Event> getEventsForDay(DateTime day) {
-    // print(day);
-    // print(events[day]);
 
-    return events[day] ?? [];
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
         firstDay: firstDay,
         lastDay: lastDay,
         focusedDay: state.focusedDay,
-        eventLoader: getEventsForDay,
+        eventLoader: viewModel.getEventsForDay,
         headerStyle: headerStyle(),
         calendarStyle: calendarStyle(),
         daysOfWeekStyle: daysOfWeekStyle(),
@@ -100,7 +93,6 @@ class _HomeScreenState extends State<HomeScreen> {
         onDaySelected: (selectedDay, focusedDay) {
           if (!isSameDay(selectedDay, state.selectedDay)) {
             viewModel.onDaySelected(selectedDay, focusedDay);
-            _selectedEvents.value = getEventsForDay(state.selectedDay);
           }
         },
       );
@@ -159,9 +151,9 @@ class _HomeScreenState extends State<HomeScreen> {
               style: lightStyle,
             ),
             Text(
-              _selectedEvents.value.isEmpty
+              state.selectedEvents.isEmpty
                   ? '0개'
-                  : '${_selectedEvents.value.length}개',
+                  : '${state.selectedEvents.length}개',
               style: lightStyle,
             ),
           ],
@@ -170,7 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget eventBox() => SizedBox(
       height: 320,
-      child: _selectedEvents.value.isEmpty ? eventIsEmpty() : eventWidget());
+      child: state.selectedEvents.isEmpty ? eventIsEmpty() : eventWidget());
 
   Widget eventIsEmpty() => const Center(
           child: Padding(
@@ -178,44 +170,42 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Text('아직 오늘 할 일이 없습니다.', style: lightStyle),
       ));
 
-  Widget eventWidget() => Column(
+  Widget eventWidget() {
+    final value = state.selectedEvents;
+    return Column(
         children: [
-          ValueListenableBuilder(
-            valueListenable: _selectedEvents,
-            builder: (context, value, _) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Column(
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Column(
+              children: [
+                Row(
                   children: [
-                    Row(
+                    if (value.isNotEmpty) event1(value: value),
+                    const SizedBox(width: 8),
+                    if (value.length >= 2) event2(value: value),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (value.length >= 3) event3(value: value),
+                    const SizedBox(width: 10),
+                    Column(
                       children: [
-                        if (value.isNotEmpty) event1(value: value),
-                        const SizedBox(width: 8),
-                        if (value.length >= 2) event2(value: value),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (value.length >= 3) event3(value: value),
-                        const SizedBox(width: 10),
-                        Column(
-                          children: [
-                            if (value.length >= 4) event4(value: value),
-                            const SizedBox(height: 10),
-                            if (value.length >= 5) event5(value: value),
-                          ],
-                        )
+                        if (value.length >= 4) event4(value: value),
+                        const SizedBox(height: 10),
+                        if (value.length >= 5) event5(value: value),
                       ],
                     )
                   ],
-                ),
-              );
-            },
+                )
+              ],
+            ),
           ),
         ],
       );
+  }
 
   BoxDecoration eventDecoration(Color color, bool isSuccess) => BoxDecoration(
         border: Border.all(
@@ -231,11 +221,11 @@ class _HomeScreenState extends State<HomeScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            _selectedEvents.value[idx].title,
+            state.selectedEvents[idx].title,
             style: boldStyle.copyWith(color: isSuccess ? background : primary),
           ),
           Text(
-            _selectedEvents.value[idx].title,
+            state.selectedEvents[idx].title,
             style: lightStyle.copyWith(color: isSuccess ? background : primary),
           ),
         ],
