@@ -2,10 +2,9 @@ import 'package:flutter/cupertino.dart';
 
 import '../theme/text_style.dart';
 
-class EventSuccessDialog extends ChangeNotifier {
-  Future<bool> eventSuccessDialog(BuildContext context, bool isSuccess) async {
-    bool thisSuccess = isSuccess;
-
+class EventSuccessDialog {
+  Future<void> eventSuccessDialog(BuildContext context,
+      {required Function(bool isSuccess) onResult}) async {
     await showCupertinoDialog(
       context: context,
       builder: (context) {
@@ -16,24 +15,20 @@ class EventSuccessDialog extends ChangeNotifier {
             CupertinoDialogAction(
               child: const Text('완료하기', style: mediumStyle),
               onPressed: () {
-                thisSuccess = true;
+                onResult.call(true);
                 Navigator.pop(context);
-                notifyListeners();
               },
             ),
             CupertinoDialogAction(
               child: const Text('취소하기', style: lightStyle),
               onPressed: () {
-                thisSuccess = false;
+                onResult.call(false);
                 Navigator.pop(context);
-                notifyListeners();
               },
             )
           ],
         );
       },
     );
-
-    return thisSuccess;
   }
 }

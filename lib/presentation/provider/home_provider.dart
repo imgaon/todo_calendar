@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:todo_calendar/presentation/screen/theme/colors.dart';
 
@@ -86,7 +87,12 @@ final eventSource = {
   ],
 };
 
-class MainProvider {
+class HomeProvider extends ChangeNotifier {
+  // 데이터
+
+  // 기능
+
+
   static const List<String> months = [
     'Jan.',
     'Feb.',

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:todo_calendar/presentation/provider/main_provider.dart';
+import 'package:todo_calendar/presentation/provider/home_provider.dart';
 import 'package:todo_calendar/presentation/screen/event_add_and_edit_screen.dart';
 import 'package:todo_calendar/presentation/screen/theme/colors.dart';
 import 'package:todo_calendar/presentation/screen/theme/text_style.dart';
@@ -37,14 +37,12 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     eventSuccessDialog = EventSuccessDialog();
-    eventSuccessDialog.addListener(updateScreen);
     _selectedEvents = ValueNotifier(getEventsForDay(_selectedDay!));
   }
 
   @override
   void dispose() {
     _selectedEvents.dispose();
-    eventSuccessDialog.removeListener(updateScreen);
     super.dispose();
   }
 
@@ -110,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
   HeaderStyle headerStyle() => const HeaderStyle(
         headerPadding: EdgeInsets.symmetric(horizontal: 40),
         titleTextStyle: calendarTitle,
-        titleTextFormatter: MainProvider.titleTextFormatter,
+        titleTextFormatter: HomeProvider.titleTextFormatter,
         rightChevronVisible: false,
         leftChevronVisible: false,
         formatButtonVisible: false,
@@ -136,7 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   DaysOfWeekStyle daysOfWeekStyle() => const DaysOfWeekStyle(
-        dowTextFormatter: MainProvider.dowTextFormatter,
+        dowTextFormatter: HomeProvider.dowTextFormatter,
         weekdayStyle: mediumStyle,
         weekendStyle: mediumStyle,
       );
@@ -219,8 +217,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       );
 
-  BoxDecoration eventDecoration(Color color, bool isSuccess) =>
-      BoxDecoration(
+  BoxDecoration eventDecoration(Color color, bool isSuccess) => BoxDecoration(
         border: Border.all(
           width: 1,
           color: isSuccess ? Colors.transparent : primary,
@@ -230,33 +227,38 @@ class _HomeScreenState extends State<HomeScreen> {
       );
 
   Widget eventText(int idx, bool isSuccess) => Column(
-    mainAxisAlignment: MainAxisAlignment.start,
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(
-        _selectedEvents.value[idx].title,
-        style:
-        boldStyle.copyWith(color: isSuccess ? background : primary),
-      ),
-      Text(
-        _selectedEvents.value[idx].title,
-        style: lightStyle.copyWith(
-            color: isSuccess ? background : primary),
-      ),
-    ],
-  );
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            _selectedEvents.value[idx].title,
+            style: boldStyle.copyWith(color: isSuccess ? background : primary),
+          ),
+          Text(
+            _selectedEvents.value[idx].title,
+            style: lightStyle.copyWith(color: isSuccess ? background : primary),
+          ),
+        ],
+      );
 
   Future<Future> eventAddAndEditPage() async => Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => const EventAddAndEditScreen()),
-  );
+        context,
+        MaterialPageRoute(builder: (context) => const EventAddAndEditScreen()),
+      );
 
   Widget event1({required List<Event> value}) {
     Color color = value[0].color;
 
     return GestureDetector(
       onTap: () async {
-        isSuccess1 = await eventSuccessDialog.eventSuccessDialog(context, isSuccess1);
+        eventSuccessDialog.eventSuccessDialog(
+          context,
+          onResult: (bool isSuccess) {
+            setState(() {
+              isSuccess1 = isSuccess;
+            });
+          },
+        );
       },
       onLongPress: eventAddAndEditPage,
       child: Container(
@@ -275,8 +277,15 @@ class _HomeScreenState extends State<HomeScreen> {
     Color color = value[1].color;
 
     return GestureDetector(
-      onTap: () async {
-        isSuccess2 = await eventSuccessDialog.eventSuccessDialog(context, isSuccess2);
+      onTap: () {
+        eventSuccessDialog.eventSuccessDialog(
+          context,
+          onResult: (bool isSuccess) {
+            setState(() {
+              isSuccess2 = isSuccess;
+            });
+          },
+        );
       },
       onLongPress: eventAddAndEditPage,
       child: Container(
@@ -295,8 +304,15 @@ class _HomeScreenState extends State<HomeScreen> {
     Color color = value[2].color;
 
     return GestureDetector(
-      onTap: () async {
-        isSuccess3 = await eventSuccessDialog.eventSuccessDialog(context, isSuccess3);
+      onTap: () {
+        eventSuccessDialog.eventSuccessDialog(
+          context,
+          onResult: (bool isSuccess) {
+            setState(() {
+              isSuccess3 = isSuccess;
+            });
+          },
+        );
       },
       onLongPress: eventAddAndEditPage,
       child: Container(
@@ -322,8 +338,15 @@ class _HomeScreenState extends State<HomeScreen> {
     Color color = value[3].color;
 
     return GestureDetector(
-      onTap: () async {
-        isSuccess4 = await eventSuccessDialog.eventSuccessDialog(context, isSuccess4);
+      onTap: () {
+        eventSuccessDialog.eventSuccessDialog(
+          context,
+          onResult: (bool isSuccess) {
+            setState(() {
+              isSuccess4 = isSuccess;
+            });
+          },
+        );
       },
       onLongPress: eventAddAndEditPage,
       child: Container(
@@ -331,8 +354,7 @@ class _HomeScreenState extends State<HomeScreen> {
         height: 70,
         decoration: eventDecoration(color, isSuccess4),
         child: Padding(
-          padding:
-          const EdgeInsets.only(left: 10, top: 5),
+          padding: const EdgeInsets.only(left: 10, top: 5),
           child: eventText(3, isSuccess4),
         ),
       ),
@@ -343,8 +365,15 @@ class _HomeScreenState extends State<HomeScreen> {
     Color color = value[4].color;
 
     return GestureDetector(
-      onTap: () async {
-        isSuccess5 = await eventSuccessDialog.eventSuccessDialog(context, isSuccess5);
+      onTap: () {
+        eventSuccessDialog.eventSuccessDialog(
+          context,
+          onResult: (bool isSuccess) {
+            setState(() {
+              isSuccess5 = isSuccess;
+            });
+          },
+        );
       },
       onLongPress: eventAddAndEditPage,
       child: Container(
@@ -359,8 +388,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         child: Padding(
-          padding:
-          const EdgeInsets.only(left: 10, top: 5),
+          padding: const EdgeInsets.only(left: 10, top: 5),
           child: eventText(4, isSuccess5),
         ),
       ),
