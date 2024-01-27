@@ -10,7 +10,12 @@ import 'package:todo_calendar/presentation/screen/widget/dialog.dart';
 import '../../domain/model/event_model.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final HomeProvider homeProvider;
+
+  const HomeScreen({
+    super.key,
+    required this.homeProvider,
+  });
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -27,21 +32,20 @@ class _HomeScreenState extends State<HomeScreen> {
     DateTime.now().day,
   );
 
-  bool isSuccess1 = false;
-  bool isSuccess2 = false;
-  bool isSuccess3 = false;
-  bool isSuccess4 = false;
-  bool isSuccess5 = false;
-
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      widget.homeProvider.addListener(updateScreen);
+    });
+
     eventSuccessDialog = EventSuccessDialog();
     _selectedEvents = ValueNotifier(getEventsForDay(_selectedDay!));
   }
 
   @override
   void dispose() {
+    widget.homeProvider.removeListener(updateScreen);
     _selectedEvents.dispose();
     super.dispose();
   }
@@ -254,9 +258,7 @@ class _HomeScreenState extends State<HomeScreen> {
         eventSuccessDialog.eventSuccessDialog(
           context,
           onResult: (bool isSuccess) {
-            setState(() {
-              isSuccess1 = isSuccess;
-            });
+            widget.homeProvider.isSuccess1 = isSuccess;
           },
         );
       },
@@ -264,10 +266,10 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Container(
         width: 215,
         height: 150,
-        decoration: eventDecoration(color, isSuccess1),
+        decoration: eventDecoration(color, widget.homeProvider.isSuccess1),
         child: Padding(
           padding: const EdgeInsets.all(10),
-          child: eventText(0, isSuccess1),
+          child: eventText(0, widget.homeProvider.isSuccess1),
         ),
       ),
     );
@@ -282,7 +284,7 @@ class _HomeScreenState extends State<HomeScreen> {
           context,
           onResult: (bool isSuccess) {
             setState(() {
-              isSuccess2 = isSuccess;
+              widget.homeProvider.isSuccess2 = isSuccess;
             });
           },
         );
@@ -291,10 +293,10 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Container(
         width: 150,
         height: 150,
-        decoration: eventDecoration(color, isSuccess2),
+        decoration: eventDecoration(color, widget.homeProvider.isSuccess2),
         child: Padding(
           padding: const EdgeInsets.all(10),
-          child: eventText(1, isSuccess2),
+          child: eventText(1, widget.homeProvider.isSuccess2),
         ),
       ),
     );
@@ -308,9 +310,7 @@ class _HomeScreenState extends State<HomeScreen> {
         eventSuccessDialog.eventSuccessDialog(
           context,
           onResult: (bool isSuccess) {
-            setState(() {
-              isSuccess3 = isSuccess;
-            });
+            widget.homeProvider.isSuccess3 = isSuccess;
           },
         );
       },
@@ -318,7 +318,8 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Container(
         width: 133,
         height: 150,
-        decoration: eventDecoration(color, isSuccess3).copyWith(
+        decoration:
+            eventDecoration(color, widget.homeProvider.isSuccess3).copyWith(
           borderRadius: const BorderRadius.only(
             bottomLeft: Radius.circular(50),
             topLeft: Radius.circular(15),
@@ -328,7 +329,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         child: Padding(
           padding: const EdgeInsets.all(10),
-          child: eventText(2, isSuccess3),
+          child: eventText(2, widget.homeProvider.isSuccess3),
         ),
       ),
     );
@@ -342,9 +343,7 @@ class _HomeScreenState extends State<HomeScreen> {
         eventSuccessDialog.eventSuccessDialog(
           context,
           onResult: (bool isSuccess) {
-            setState(() {
-              isSuccess4 = isSuccess;
-            });
+            widget.homeProvider.isSuccess4 = isSuccess;
           },
         );
       },
@@ -352,10 +351,10 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Container(
         width: 230,
         height: 70,
-        decoration: eventDecoration(color, isSuccess4),
+        decoration: eventDecoration(color, widget.homeProvider.isSuccess4),
         child: Padding(
           padding: const EdgeInsets.only(left: 10, top: 5),
-          child: eventText(3, isSuccess4),
+          child: eventText(3, widget.homeProvider.isSuccess4),
         ),
       ),
     );
@@ -369,9 +368,7 @@ class _HomeScreenState extends State<HomeScreen> {
         eventSuccessDialog.eventSuccessDialog(
           context,
           onResult: (bool isSuccess) {
-            setState(() {
-              isSuccess5 = isSuccess;
-            });
+            widget.homeProvider.isSuccess5 = isSuccess;
           },
         );
       },
@@ -379,7 +376,8 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Container(
         width: 230,
         height: 70,
-        decoration: eventDecoration(color, isSuccess5).copyWith(
+        decoration:
+            eventDecoration(color, widget.homeProvider.isSuccess5).copyWith(
           borderRadius: const BorderRadius.only(
             bottomRight: Radius.circular(50),
             topLeft: Radius.circular(15),
@@ -389,7 +387,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         child: Padding(
           padding: const EdgeInsets.only(left: 10, top: 5),
-          child: eventText(4, isSuccess5),
+          child: eventText(4, widget.homeProvider.isSuccess5),
         ),
       ),
     );

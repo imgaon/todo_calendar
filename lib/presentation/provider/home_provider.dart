@@ -87,11 +87,49 @@ final eventSource = {
   ],
 };
 
+// ViewModel
 class HomeProvider extends ChangeNotifier {
   // 데이터
+  bool _isSuccess1 = false;
+  bool _isSuccess2 = false;
+  bool _isSuccess3 = false;
+  bool _isSuccess4 = false;
+  bool _isSuccess5 = false;
 
-  // 기능
+  bool get isSuccess1 => _isSuccess1;
 
+  bool get isSuccess2 => _isSuccess2;
+
+  bool get isSuccess3 => _isSuccess3;
+
+  bool get isSuccess4 => _isSuccess4;
+
+  bool get isSuccess5 => _isSuccess5;
+
+  set isSuccess2(bool value) {
+    _isSuccess2 = value;
+    notifyListeners();
+  }
+
+  set isSuccess3(bool value) {
+    _isSuccess3 = value;
+    notifyListeners();
+  }
+
+  set isSuccess4(bool value) {
+    _isSuccess4 = value;
+    notifyListeners();
+  }
+
+  set isSuccess5(bool value) {
+    _isSuccess5 = value;
+    notifyListeners();
+  }
+
+  set isSuccess1(bool value) {
+    _isSuccess1 = value;
+    notifyListeners();
+  } // 기능
 
   static const List<String> months = [
     'Jan.',
@@ -125,6 +163,7 @@ class HomeProvider extends ChangeNotifier {
 
     return '$monthAbbreviation  $month';
   }
+
   static String dowTextFormatter(DateTime date, dynamic locale) {
     final weekday = date.weekday == 7 ? 0 : date.weekday.toInt();
     final String weekAbbreviation = dayOfWeeks[weekday];
