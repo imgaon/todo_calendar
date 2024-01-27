@@ -9,6 +9,8 @@ class HomeState {
   final DateTime focusedDay;
   final DateTime selectedDay;
   final List<Event> selectedEvents;
+  final DateTime firstDay;
+  final DateTime lastDay;
 
 //<editor-fold desc="Data Methods">
   const HomeState({
@@ -20,6 +22,8 @@ class HomeState {
     required this.focusedDay,
     required this.selectedDay,
     required this.selectedEvents,
+    required this.firstDay,
+    required this.lastDay,
   });
 
   @override
@@ -34,7 +38,9 @@ class HomeState {
           isSuccess5 == other.isSuccess5 &&
           focusedDay == other.focusedDay &&
           selectedDay == other.selectedDay &&
-          selectedEvents == other.selectedEvents);
+          selectedEvents == other.selectedEvents &&
+          firstDay == other.firstDay &&
+          lastDay == other.lastDay);
 
   @override
   int get hashCode =>
@@ -45,7 +51,9 @@ class HomeState {
       isSuccess5.hashCode ^
       focusedDay.hashCode ^
       selectedDay.hashCode ^
-      selectedEvents.hashCode;
+      selectedEvents.hashCode ^
+      firstDay.hashCode ^
+      lastDay.hashCode;
 
   @override
   String toString() {
@@ -58,6 +66,8 @@ class HomeState {
         ' focusedDay: $focusedDay,' +
         ' selectedDay: $selectedDay,' +
         ' selectedEvents: $selectedEvents,' +
+        ' firstDay: $firstDay,' +
+        ' lastDay: $lastDay,' +
         '}';
   }
 
@@ -70,6 +80,8 @@ class HomeState {
     DateTime? focusedDay,
     DateTime? selectedDay,
     List<Event>? selectedEvents,
+    DateTime? firstDay,
+    DateTime? lastDay,
   }) {
     return HomeState(
       isSuccess1: isSuccess1 ?? this.isSuccess1,
@@ -80,6 +92,8 @@ class HomeState {
       focusedDay: focusedDay ?? this.focusedDay,
       selectedDay: selectedDay ?? this.selectedDay,
       selectedEvents: selectedEvents ?? this.selectedEvents,
+      firstDay: firstDay ?? this.firstDay,
+      lastDay: lastDay ?? this.lastDay,
     );
   }
 
@@ -93,6 +107,8 @@ class HomeState {
       'focusedDay': this.focusedDay,
       'selectedDay': this.selectedDay,
       'selectedEvents': this.selectedEvents,
+      'firstDay': this.firstDay,
+      'lastDay': this.lastDay,
     };
   }
 
@@ -106,6 +122,8 @@ class HomeState {
       focusedDay: map['focusedDay'] as DateTime,
       selectedDay: map['selectedDay'] as DateTime,
       selectedEvents: map['selectedEvents'] as List<Event>,
+      firstDay: map['firstDay'] as DateTime,
+      lastDay: map['lastDay'] as DateTime,
     );
   }
 

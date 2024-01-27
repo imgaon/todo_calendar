@@ -8,6 +8,7 @@ import 'package:todo_calendar/presentation/screen/theme/colors.dart';
 import 'package:todo_calendar/presentation/screen/theme/text_style.dart';
 import 'package:todo_calendar/presentation/screen/widget/dialog.dart';
 
+import '../../core/formatter.dart';
 import '../../domain/model/event_model.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -26,6 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void updateScreen() => setState(() {});
 
   HomeState get state => widget.homeProvider.state;
+
   HomeProvider get viewModel => widget.homeProvider;
 
   late final EventSuccessDialog eventSuccessDialog;
@@ -46,8 +48,6 @@ class _HomeScreenState extends State<HomeScreen> {
     widget.homeProvider.removeListener(updateScreen);
     super.dispose();
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -81,8 +81,8 @@ class _HomeScreenState extends State<HomeScreen> {
       );
 
   TableCalendar tableCalendar() => TableCalendar(
-        firstDay: firstDay,
-        lastDay: lastDay,
+        firstDay: state.firstDay,
+        lastDay: state.lastDay,
         focusedDay: state.focusedDay,
         eventLoader: viewModel.getEventsForDay,
         headerStyle: headerStyle(),
@@ -100,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
   HeaderStyle headerStyle() => const HeaderStyle(
         headerPadding: EdgeInsets.symmetric(horizontal: 40),
         titleTextStyle: calendarTitle,
-        titleTextFormatter: HomeProvider.titleTextFormatter,
+        titleTextFormatter: titleTextFormatter,
         rightChevronVisible: false,
         leftChevronVisible: false,
         formatButtonVisible: false,
@@ -126,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   DaysOfWeekStyle daysOfWeekStyle() => const DaysOfWeekStyle(
-        dowTextFormatter: HomeProvider.dowTextFormatter,
+        dowTextFormatter: dowTextFormatter,
         weekdayStyle: mediumStyle,
         weekendStyle: mediumStyle,
       );
@@ -173,38 +173,38 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget eventWidget() {
     final value = state.selectedEvents;
     return Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    if (value.isNotEmpty) event1(value: value),
-                    const SizedBox(width: 8),
-                    if (value.length >= 2) event2(value: value),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (value.length >= 3) event3(value: value),
-                    const SizedBox(width: 10),
-                    Column(
-                      children: [
-                        if (value.length >= 4) event4(value: value),
-                        const SizedBox(height: 10),
-                        if (value.length >= 5) event5(value: value),
-                      ],
-                    )
-                  ],
-                )
-              ],
-            ),
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  if (value.isNotEmpty) event1(value: value),
+                  const SizedBox(width: 8),
+                  if (value.length >= 2) event2(value: value),
+                ],
+              ),
+              const SizedBox(height: 10),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (value.length >= 3) event3(value: value),
+                  const SizedBox(width: 10),
+                  Column(
+                    children: [
+                      if (value.length >= 4) event4(value: value),
+                      const SizedBox(height: 10),
+                      if (value.length >= 5) event5(value: value),
+                    ],
+                  )
+                ],
+              )
+            ],
           ),
-        ],
-      );
+        ),
+      ],
+    );
   }
 
   BoxDecoration eventDecoration(Color color, bool isSuccess) => BoxDecoration(
@@ -304,8 +304,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Container(
         width: 133,
         height: 150,
-        decoration:
-            eventDecoration(color, state.isSuccess3).copyWith(
+        decoration: eventDecoration(color, state.isSuccess3).copyWith(
           borderRadius: const BorderRadius.only(
             bottomLeft: Radius.circular(50),
             topLeft: Radius.circular(15),
@@ -362,8 +361,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Container(
         width: 230,
         height: 70,
-        decoration:
-            eventDecoration(color, state.isSuccess5).copyWith(
+        decoration: eventDecoration(color, state.isSuccess5).copyWith(
           borderRadius: const BorderRadius.only(
             bottomRight: Radius.circular(50),
             topLeft: Radius.circular(15),
