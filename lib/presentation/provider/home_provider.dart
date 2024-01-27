@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:todo_calendar/presentation/screen/home_state.dart';
 import 'package:todo_calendar/presentation/screen/theme/colors.dart';
 
 import '../../domain/model/event_model.dart';
@@ -90,46 +91,34 @@ final eventSource = {
 // ViewModel
 class HomeProvider extends ChangeNotifier {
   // 데이터
-  bool _isSuccess1 = false;
-  bool _isSuccess2 = false;
-  bool _isSuccess3 = false;
-  bool _isSuccess4 = false;
-  bool _isSuccess5 = false;
+  HomeState _state = const HomeState();
 
-  bool get isSuccess1 => _isSuccess1;
+  HomeState get state => _state;
 
-  bool get isSuccess2 => _isSuccess2;
-
-  bool get isSuccess3 => _isSuccess3;
-
-  bool get isSuccess4 => _isSuccess4;
-
-  bool get isSuccess5 => _isSuccess5;
-
-  set isSuccess2(bool value) {
-    _isSuccess2 = value;
+  void setSuccessTitle1(bool isSuccess) {
+    _state = state.copyWith(isSuccess1: isSuccess);
     notifyListeners();
   }
 
-  set isSuccess3(bool value) {
-    _isSuccess3 = value;
+  void setSuccessTitle2(bool isSuccess) {
+    _state = state.copyWith(isSuccess2: isSuccess);
     notifyListeners();
   }
 
-  set isSuccess4(bool value) {
-    _isSuccess4 = value;
+  void setSuccessTitle3(bool isSuccess) {
+    _state = state.copyWith(isSuccess3: isSuccess);
     notifyListeners();
   }
 
-  set isSuccess5(bool value) {
-    _isSuccess5 = value;
+  void setSuccessTitle4(bool isSuccess) {
+    _state = state.copyWith(isSuccess4: isSuccess);
     notifyListeners();
   }
 
-  set isSuccess1(bool value) {
-    _isSuccess1 = value;
+  void setSuccessTitle5(bool isSuccess) {
+    _state = state.copyWith(isSuccess5: isSuccess);
     notifyListeners();
-  } // 기능
+  }
 
   static const List<String> months = [
     'Jan.',
