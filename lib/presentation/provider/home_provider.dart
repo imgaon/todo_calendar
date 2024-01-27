@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:todo_calendar/domain/repository/event_repository.dart';
+import 'package:todo_calendar/domain/use_case/get_events_for_day_use_case.dart';
 import 'package:todo_calendar/presentation/screen/home_state.dart';
 import 'package:todo_calendar/presentation/screen/theme/colors.dart';
 
@@ -16,11 +17,12 @@ final DateTime toDay = DateTime.utc(
 
 // ViewModel
 class HomeProvider extends ChangeNotifier {
-  final EventRepository _eventRepository;
+  final GetEventsForDayUseCase _getEventsForDayUseCase;
 
   HomeProvider({
-    required EventRepository eventRepository,
-  }) : _eventRepository = eventRepository;
+    required GetEventsForDayUseCase getEventsForDayUseCase,
+  }) : _getEventsForDayUseCase = getEventsForDayUseCase;
+
 
   // 데이터
   HomeState _state = HomeState(
@@ -89,7 +91,7 @@ class HomeProvider extends ChangeNotifier {
   List<Event> getEventsForDay(DateTime day) {
     // print(day);
     // print(events[day]);
-
-    return _eventRepository.getEvents()[day] ?? [];
+    return _getEventsForDayUseCase.execute(day);
   }
+
 }

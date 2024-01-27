@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_calendar/data/repository/event_repository_impl.dart';
+import 'package:todo_calendar/domain/use_case/get_events_for_day_use_case.dart';
 import 'package:todo_calendar/presentation/provider/home_provider.dart';
 
 import 'presentation/screen/home_screen.dart';
@@ -9,7 +10,9 @@ void main() {
     theme: ThemeData(fontFamily: 'NotoSans'),
     home: HomeScreen(
       homeProvider: HomeProvider(
-        eventRepository: EventRepositoryImpl(),
+        getEventsForDayUseCase: GetEventsForDayUseCase(
+          eventRepository: EventRepositoryImpl(),
+        ),
       ),
     ),
   ));
