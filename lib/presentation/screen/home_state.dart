@@ -4,6 +4,8 @@ class HomeState {
   final bool isSuccess3;
   final bool isSuccess4;
   final bool isSuccess5;
+  final DateTime focusedDay;
+  final DateTime selectedDay;
 
 //<editor-fold desc="Data Methods">
   const HomeState({
@@ -12,6 +14,8 @@ class HomeState {
     this.isSuccess3 = false,
     this.isSuccess4 = false,
     this.isSuccess5 = false,
+    required this.focusedDay,
+    required this.selectedDay,
   });
 
   @override
@@ -23,7 +27,9 @@ class HomeState {
           isSuccess2 == other.isSuccess2 &&
           isSuccess3 == other.isSuccess3 &&
           isSuccess4 == other.isSuccess4 &&
-          isSuccess5 == other.isSuccess5);
+          isSuccess5 == other.isSuccess5 &&
+          focusedDay == other.focusedDay &&
+          selectedDay == other.selectedDay);
 
   @override
   int get hashCode =>
@@ -31,7 +37,9 @@ class HomeState {
       isSuccess2.hashCode ^
       isSuccess3.hashCode ^
       isSuccess4.hashCode ^
-      isSuccess5.hashCode;
+      isSuccess5.hashCode ^
+      focusedDay.hashCode ^
+      selectedDay.hashCode;
 
   @override
   String toString() {
@@ -41,6 +49,8 @@ class HomeState {
         ' isSuccess3: $isSuccess3,' +
         ' isSuccess4: $isSuccess4,' +
         ' isSuccess5: $isSuccess5,' +
+        ' focusedDay: $focusedDay,' +
+        ' selectedDay: $selectedDay,' +
         '}';
   }
 
@@ -50,6 +60,8 @@ class HomeState {
     bool? isSuccess3,
     bool? isSuccess4,
     bool? isSuccess5,
+    DateTime? focusedDay,
+    DateTime? selectedDay,
   }) {
     return HomeState(
       isSuccess1: isSuccess1 ?? this.isSuccess1,
@@ -57,6 +69,8 @@ class HomeState {
       isSuccess3: isSuccess3 ?? this.isSuccess3,
       isSuccess4: isSuccess4 ?? this.isSuccess4,
       isSuccess5: isSuccess5 ?? this.isSuccess5,
+      focusedDay: focusedDay ?? this.focusedDay,
+      selectedDay: selectedDay ?? this.selectedDay,
     );
   }
 
@@ -67,6 +81,8 @@ class HomeState {
       'isSuccess3': this.isSuccess3,
       'isSuccess4': this.isSuccess4,
       'isSuccess5': this.isSuccess5,
+      'focusedDay': this.focusedDay,
+      'selectedDay': this.selectedDay,
     };
   }
 
@@ -77,8 +93,8 @@ class HomeState {
       isSuccess3: map['isSuccess3'] as bool,
       isSuccess4: map['isSuccess4'] as bool,
       isSuccess5: map['isSuccess5'] as bool,
+      focusedDay: map['focusedDay'] as DateTime,
+      selectedDay: map['selectedDay'] as DateTime,
     );
   }
-
-//</editor-fold>
 }

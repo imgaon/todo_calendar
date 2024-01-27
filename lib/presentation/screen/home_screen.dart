@@ -30,12 +30,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   late final ValueNotifier<List<Event>> _selectedEvents;
   late final EventSuccessDialog eventSuccessDialog;
-  DateTime _focusedDay = DateTime.now();
-  DateTime? _selectedDay = DateTime.utc(
-    DateTime.now().year,
-    DateTime.now().month,
-    DateTime.now().day,
-  );
 
   @override
   void initState() {
@@ -45,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });
 
     eventSuccessDialog = EventSuccessDialog();
-    _selectedEvents = ValueNotifier(getEventsForDay(_selectedDay!));
+    _selectedEvents = ValueNotifier(getEventsForDay(state.selectedDay));
   }
 
   @override
@@ -83,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 20, 20, 20),
-            child: Text('${_focusedDay.year}', style: lightStyle),
+            child: Text('${state.focusedDay.year}', style: lightStyle),
           ),
         ],
       );
@@ -96,20 +90,17 @@ class _HomeScreenState extends State<HomeScreen> {
   TableCalendar tableCalendar() => TableCalendar(
         firstDay: firstDay,
         lastDay: lastDay,
-        focusedDay: _focusedDay,
+        focusedDay: state.focusedDay,
         eventLoader: getEventsForDay,
         headerStyle: headerStyle(),
         calendarStyle: calendarStyle(),
         daysOfWeekStyle: daysOfWeekStyle(),
         daysOfWeekHeight: 40,
-        selectedDayPredicate: (day) => isSameDay(day, _selectedDay),
+        selectedDayPredicate: (day) => isSameDay(day, state.selectedDay),
         onDaySelected: (selectedDay, focusedDay) {
-          if (!isSameDay(selectedDay, _selectedDay)) {
-            setState(() {
-              _selectedDay = selectedDay;
-              _focusedDay = focusedDay;
-            });
-            _selectedEvents.value = getEventsForDay(_selectedDay!);
+          if (!isSameDay(selectedDay, state.selectedDay)) {
+            viewModel.onDaySelected(selectedDay, focusedDay);
+            _selectedEvents.value = getEventsForDay(state.selectedDay);
           }
         },
       );
@@ -164,7 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              '${_selectedDay!.year}년 ${_selectedDay!.month}월 ${_selectedDay!.day}일',
+              '${state.selectedDay.year}년 ${state.selectedDay.month}월 ${state.selectedDay.day}일',
               style: lightStyle,
             ),
             Text(

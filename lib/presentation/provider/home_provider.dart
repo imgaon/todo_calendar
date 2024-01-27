@@ -91,7 +91,14 @@ final eventSource = {
 // ViewModel
 class HomeProvider extends ChangeNotifier {
   // 데이터
-  HomeState _state = const HomeState();
+  HomeState _state = HomeState(
+    focusedDay: DateTime.now(),
+    selectedDay: DateTime.utc(
+      DateTime.now().year,
+      DateTime.now().month,
+      DateTime.now().day,
+    ),
+  );
 
   HomeState get state => _state;
 
@@ -117,6 +124,14 @@ class HomeProvider extends ChangeNotifier {
 
   void setSuccessTitle5(bool isSuccess) {
     _state = state.copyWith(isSuccess5: isSuccess);
+    notifyListeners();
+  }
+
+  void onDaySelected(DateTime selectedDay, DateTime focusedDay) {
+    _state = state.copyWith(
+      selectedDay: selectedDay,
+      focusedDay: focusedDay,
+    );
     notifyListeners();
   }
 
