@@ -17,6 +17,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  Size get size => MediaQuery.of(context).size;
+
   void updateScreen() => setState(() {});
   late final ValueNotifier<List<Event>> _selectedEvents;
   late final EventSuccessDialog eventSuccessDialog;
@@ -142,6 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
       );
 
   Widget renderEvent() => Column(
+    crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           eventIndicator(),
           const SizedBox(height: 3),
@@ -171,7 +174,7 @@ class _HomeScreenState extends State<HomeScreen> {
       );
 
   Widget eventBox() => SizedBox(
-      height: 320,
+      height: size.height * 0.37,
       child: _selectedEvents.value.isEmpty ? eventIsEmpty() : eventWidget());
 
   Widget eventIsEmpty() => const Center(
@@ -260,7 +263,7 @@ class _HomeScreenState extends State<HomeScreen> {
       },
       onLongPress: eventAddAndEditPage,
       child: Container(
-        width: 215,
+        width: size.width * 0.545,
         height: 150,
         decoration: eventDecoration(color, isSuccess1),
         child: Padding(
@@ -280,7 +283,7 @@ class _HomeScreenState extends State<HomeScreen> {
       },
       onLongPress: eventAddAndEditPage,
       child: Container(
-        width: 150,
+        width: size.width * 0.38,
         height: 150,
         decoration: eventDecoration(color, isSuccess2),
         child: Padding(
@@ -300,7 +303,7 @@ class _HomeScreenState extends State<HomeScreen> {
       },
       onLongPress: eventAddAndEditPage,
       child: Container(
-        width: 133,
+        width: size.width * 0.36,
         height: 150,
         decoration: eventDecoration(color, isSuccess3).copyWith(
           borderRadius: const BorderRadius.only(
@@ -327,7 +330,7 @@ class _HomeScreenState extends State<HomeScreen> {
       },
       onLongPress: eventAddAndEditPage,
       child: Container(
-        width: 230,
+        width: size.width * 0.56,
         height: 70,
         decoration: eventDecoration(color, isSuccess4),
         child: Padding(
@@ -348,7 +351,7 @@ class _HomeScreenState extends State<HomeScreen> {
       },
       onLongPress: eventAddAndEditPage,
       child: Container(
-        width: 230,
+        width: size.width * 0.56,
         height: 70,
         decoration: eventDecoration(color, isSuccess5).copyWith(
           borderRadius: const BorderRadius.only(

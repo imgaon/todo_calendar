@@ -25,13 +25,13 @@ const TextStyle boldStyle = TextStyle(
 const TextStyle mediumStyle = TextStyle(
   fontWeight: FontWeight.w500,
   color: primary,
-  fontSize: 14,
+  fontSize: 15,
   letterSpacing: -0.3,
 );
 
 const TextStyle lightStyle = TextStyle(
   fontWeight: FontWeight.w300,
   color: primary,
-  fontSize: 14,
+  fontSize: 15,
   letterSpacing: -0.3,
 );
